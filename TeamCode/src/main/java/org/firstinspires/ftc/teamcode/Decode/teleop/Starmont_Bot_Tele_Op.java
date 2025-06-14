@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.Decode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.Decode.Starmont_Bot;
 
 
 /**
@@ -100,21 +101,21 @@ public class Starmont_Bot_Tele_Op extends OpMode {
         // Do stuff based on button input. You know what you're doing here :)
 
         if (gamepad2.left_stick_y >= 0.1){
-            robot.arm.setPower(0.5);
+            robot.frontArm.setPower(0.5);
         } else if (gamepad2.left_stick_y <= -0.1){
-            robot.arm.setPower(-0.5);
+            robot.frontArm.setPower(-0.5);
         } else {
-            robot.arm.setPower(0);
+            robot.frontArm.setPower(0);
         }
 
         if (gamepad2.a){
-            robot.leftjaw.setPosition(1);
-            robot.rightjaw.setPosition(1);
+            robot.frontRightJaw.setPosition(1);
+            robot.frontLeftJaw.setPosition(1);
             //meow THIS OPENS IT :3
         }
        else if (gamepad2.b){
-            robot.leftjaw.setPosition(0);
-            robot.rightjaw.setPosition(0);
+            robot.frontRightJaw.setPosition(0);
+            robot.frontLeftJaw.setPosition(0);
            //CLOSES IT!!!!!!!!!!!
         }
 
@@ -151,9 +152,9 @@ public class Starmont_Bot_Tele_Op extends OpMode {
     private void singleJoystickDrive () {
         // A good explanation of how this function works: https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
 
-        float rightX = this.gamepad1.right_stick_x;      /* Can be reversed */
-        float leftY = -this.gamepad1.left_stick_y;      /* Can be reversed */
-        float leftX = this.gamepad1.left_stick_x;      /* Can be reversed */
+        float rightX = -this.gamepad1.right_stick_x;      /* Can be reversed */
+        float leftY = this.gamepad1.left_stick_y;      /* Can be reversed */
+        float leftX = -this.gamepad1.left_stick_x;      /* Can be reversed */
 
         float[] motorPowers = new float[4];
 

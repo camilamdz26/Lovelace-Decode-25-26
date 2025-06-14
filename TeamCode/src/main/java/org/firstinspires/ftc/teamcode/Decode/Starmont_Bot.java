@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import java.util.Objects;
 
 public class Starmont_Bot {
 
@@ -20,10 +18,16 @@ public class Starmont_Bot {
     public DcMotor backrightwheel;
     public DcMotor frontleftwheel;
     public DcMotor frontrightwheel;
-    public DcMotor arm;
+    public DcMotor frontArm;
+    public DcMotor backArm;
 
-    public Servo rightjaw;
-    public Servo leftjaw;
+    public Servo frontLeftJaw;
+    public Servo frontRightJaw;
+    public Servo flippyFrontArm;
+    public Servo backLeftJaw;
+    public Servo backRightJaw;
+    public Servo backArmPivot;
+
 
     public Telemetry telemetry;
 
@@ -48,14 +52,19 @@ public class Starmont_Bot {
 
         //TODO: Initialize all motors and servos from the hardware map
         //Example: frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        backleftwheel = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        backrightwheel = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontleftwheel = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontrightwheel = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        arm = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        backleftwheel = hardwareMap.get(DcMotor.class, "Left Back");
+        backrightwheel = hardwareMap.get(DcMotor.class, "Right Back");
+        frontleftwheel = hardwareMap.get(DcMotor.class, "Left Front");
+        frontrightwheel = hardwareMap.get(DcMotor.class, "Right Front");
+        frontArm = hardwareMap.get(DcMotor.class, "Lift Motor");
+        backArm = hardwareMap.get(DcMotor.class, "Back Arm");
 
-        leftjaw = hardwareMap.get(Servo.class, "frontLeftDrive");
-        rightjaw = hardwareMap.get(Servo.class, "frontLeftDrive");
+        frontLeftJaw = hardwareMap.get(Servo.class, "Grab Servo Left");
+        frontRightJaw = hardwareMap.get(Servo.class, "Grab Servo Right");
+        flippyFrontArm = hardwareMap.get(Servo.class, "Arm Servo");
+        backLeftJaw = hardwareMap.get(Servo.class, "Back Arm Left");
+        backRightJaw = hardwareMap.get(Servo.class, "Back Arm Right");
+        backArmPivot = hardwareMap.get(Servo.class, "Back Arm Pivot");
 
         // This section sets the direction of all of the motors. Depending on the motor, this may change later in the program.
         //TODO: Reverse left side motors for mecanum wheel driving
@@ -70,7 +79,7 @@ public class Starmont_Bot {
         backleftwheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontrightwheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backrightwheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.addData("Status", "Initialized");
 
