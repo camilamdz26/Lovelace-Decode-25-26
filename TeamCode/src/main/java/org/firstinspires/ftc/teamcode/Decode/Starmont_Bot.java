@@ -85,6 +85,25 @@ public class Starmont_Bot {
 
     }
 
+    public void bite(String openClose) {
+        if (openClose == "OPEN") {
+            frontLeftJaw.setPosition(0.59);
+            frontRightJaw.setPosition(0.38);
+        }
+        else if (openClose == "CLOSE") {
+            frontLeftJaw.setPosition(.42);
+            frontRightJaw.setPosition(.52);
+        }
+    }
+
+    public void moveElbow(Boolean raiseIt) {
+        if (raiseIt) { // raise it
+            flippyFrontArm.setPosition(.5);
+        }
+        else { // lower it
+            flippyFrontArm.setPosition(0.78);
+        }
+    }
 
     public boolean isWheelsBusy(){
         //This checks if each wheel is "busy" (moving). If the answer to any single check is yes,

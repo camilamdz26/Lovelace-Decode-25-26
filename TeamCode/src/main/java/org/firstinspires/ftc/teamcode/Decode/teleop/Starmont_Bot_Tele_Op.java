@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.Decode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.Decode.Starmont_Bot;
 
 
@@ -72,6 +73,8 @@ public class Starmont_Bot_Tele_Op extends OpMode {
         //We initialized the variable above, so now we're giving it a value.
         robot = new Starmont_Bot(hardwareMap, telemetry, this);
 
+        robot.moveElbow(Boolean.TRUE);
+
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -79,7 +82,9 @@ public class Starmont_Bot_Tele_Op extends OpMode {
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
      */
-    public void init_loop() {telemetry.addData("HYPE", "ARE! YOU! READY?!?!?!?!");}
+    public void init_loop() {
+        telemetry.addData("LOCK THE ACTUAL FUCK IN!!!! gage if u report this ill tell the officials about the pocketknife u carry", "\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDCA5\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25");
+    }
 
     /*
      * Code to run ONCE when the driver hits PLAY
@@ -100,24 +105,11 @@ public class Starmont_Bot_Tele_Op extends OpMode {
 
         // Do stuff based on button input. You know what you're doing here :)
 
-        if (gamepad2.left_stick_y >= 0.1){
-            robot.frontArm.setPower(0.5);
-        } else if (gamepad2.left_stick_y <= -0.1){
-            robot.frontArm.setPower(-0.5);
-        } else {
-            robot.frontArm.setPower(0);
-        }
+        armControl();
 
-        if (gamepad2.a){
-            robot.frontRightJaw.setPosition(1);
-            robot.frontLeftJaw.setPosition(1);
-            //meow THIS OPENS IT :3
-        }
-       else if (gamepad2.b){
-            robot.frontRightJaw.setPosition(0);
-            robot.frontLeftJaw.setPosition(0);
-           //CLOSES IT!!!!!!!!!!!
-        }
+        clawControl();
+
+        elbowControl();
 
     }
 
@@ -184,6 +176,37 @@ public class Starmont_Bot_Tele_Op extends OpMode {
         setIndividualPowers(motorPowers);
 
     }
+
+    private void armControl() {
+        if (gamepad2.left_stick_y >= 0.1){
+            robot.frontArm.setPower(0.5);
+        } else if (gamepad2.left_stick_y <= -0.1){
+            robot.frontArm.setPower(-0.5);
+        } else {
+            robot.frontArm.setPower(0);
+        }
+    }
+    private void clawControl() {
+        if (gamepad2.a) {
+            robot.bite("OPEN");
+            //meow THIS OPENS IT :3
+        }
+        else if (gamepad2.b) {
+            robot.bite("CLOSE");
+            //CLOSES IT!!!!!!!!!!!
+        }
+    }
+
+    private void elbowControl() {
+        if (gamepad2.y) {
+            robot.moveElbow(Boolean.TRUE);
+        }
+        else if (gamepad2.x) {
+            robot.moveElbow(Boolean.FALSE);
+        }
+    }
+
+
 
     private float getLargestAbsVal ( float[] values){
         // This function does some math!
