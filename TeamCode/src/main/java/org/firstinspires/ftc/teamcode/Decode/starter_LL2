@@ -1,0 +1,70 @@
+package org.firstinspires.ftc.teamcode.autonomous;
+
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import java.util.List;
+
+@Autonomous(name = "Auto: Limelight AprilTag", group = "Auto")
+public class AutoLimelightAprilTag extends LinearOpMode {
+
+    private Limelight3A limelight; //import the limelight
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        // Initialize Limelight
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.pipelineSwitch(0);  // Make sure pipeline 0 is your AprilTag pipeline
+        limelight.start();            // Start getting data from Limelight
+
+        telemetry.setMsTransmissionInterval(20); //rate of data colelction?
+        telemetry.addLine("Initialized Limelight. Waiting for start..."); //we could cut this
+        telemetry.update();
+
+        waitForStart();
+
+        // STEP 1: Detect AprilTag before deciding movement
+        int tagIdSeen = -1; //-1 because no tag has been detected yet
+        long startTime = System.currentTimeMillis();
+        long timeout = 3000; // 3 seconds timeout
+
+        while (opModeIsActive() &&
+               System.currentTimeMillis() - startTime < timeout && //has it been xyz seconds since we started running the code?
+               tagIdSeen == -1) { //
+
+            LLResult result = limelight.getLatestResult(); //get the results
+            if (result != null && result.isValid()) { //result exists?
+                List<LLResultTypes.FiducialResult> fiducials = result.getFiducialResults(); //makes a list
+                if (!fiducials.isEmpty()) { //list exists, if april tags have been detected
+                    tagIdSeen = fiducials.get(0).getFiducialId(); //gets the tag id
+                    telemetry.addData("AprilTag Detected", "ID: %d", tagIdSeen);
+                }
+            } else {
+                telemetry.addLine("No tag seen yet...");
+            }
+
+            telemetry.update();
+            sleep(50);
+        }
+
+        // STEP 2: Decide path based on detected tag
+        telemetry.addData("Tag ID Final", tagIdSeen);
+        telemetry.update();
+
+        if (tagIdSeen == 1) {
+            goLeft();
+        } else if (tagIdSeen == 2) {
+            goCenter();
+        } else if (tagIdSeen == 3) {
+            goRight();
+        } else {
+            fallback();
+        }
+
+        // STEP 3: Stop Limelight after use
+        limelight.stop();
+    }
+}
