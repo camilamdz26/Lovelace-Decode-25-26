@@ -13,8 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 import java.util.List;
 
-@TeleOp(name = "Sensor: Limelight3A", group = "Sensor") //creates a teleop module
-@Disabled
+@TeleOp(name = "Sensor: Limelight3A", group = "Sensor") //creates a teleop module called limelighgt
 public class SensorLimelight3A extends LinearOpMode {
 
     private Limelight3A limelight;
@@ -24,16 +23,16 @@ public class SensorLimelight3A extends LinearOpMode {
     {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
-        telemetry.setMsTransmissionInterval(11); //how often it collects/reports data
+        telemetry.setMsTransmissionInterval(11); //how often it collects/reports data. this is pretty fast
 
         limelight.pipelineSwitch(0); //go to the right pipeline
 
         /*
          * Starts polling for data.  If you neglect to call start(), getLatestResult() will return null.
          */
-        limelight.start(); //limelight turns on 
+        limelight.start(); //limelight turns on, will start to collect data
 
-        telemetry.addData(">", "Robot Ready.  Press Play.");
+        telemetry.addData(">", "Robot Ready.  Press Play."); //says that the robot is ready to go
         telemetry.update();
         waitForStart();
 
@@ -44,17 +43,17 @@ public class SensorLimelight3A extends LinearOpMode {
             telemetry.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
                     status.getTemp(), status.getCpu(),(int)status.getFps());
             telemetry.addData("Pipeline", "Index: %d, Type: %s",
-                    status.getPipelineIndex(), status.getPipelineType());
+                    status.getPipelineIndex(), status.getPipelineType()); //this will tell us the health and current stastus of the camera
 
             LLResult result = limelight.getLatestResult(); //there is a result
             if (result.isValid()) { //result exists
                 // Access general information
-                Pose3D botpose = result.getBotpose();
-                double captureLatency = result.getCaptureLatency();
-                double targetingLatency = result.getTargetingLatency();
-                double parseLatency = result.getParseLatency();
+                Pose3D botpose = result.getBotpose(); //position in respect to teh april tag
+                double captureLatency = result.getCaptureLatency(); //time to take image
+                double targetingLatency = result.getTargetingLatency(); //time to process vision
+                double parseLatency = result.getParseLatency(); //time to interpret results
                 telemetry.addData("LL Latency", captureLatency + targetingLatency);
-                telemetry.addData("Parse Latency", parseLatency);
+                telemetry.addData("Parse Latency", parseLatency); //tells us the results through telemetry
                 telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
 
                 telemetry.addData("tx", result.getTx()); //horiontal offsett
